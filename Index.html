@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Majha Ghar - Rooms & Mess Finder Kopargaon</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#FFF7F0}
+.header{padding:16px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;gap:12px;align-items:center}
+.logo-icon{width:56px;height:56px;background:linear-gradient(135deg,#FF8A2A,#FF6B00);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.logo h1{font-size:22px;font-weight:700;color:#1A1A2E;line-height:1.1}
+.logo p{font-size:11px;color:#FF8A2A;font-weight:500}
+.avatar{width:44px;height:44px;background:#FF8A2A;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+.search-box{margin:10px 16px;background:white;border-radius:30px;padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1px solid #FFE5D0}
+.search-box input{flex:1;border:none;outline:none;font-size:15px;font-weight:500}
+.cards{margin:18px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{border-radius:20px;padding:16px;position:relative;cursor:pointer;min-height:160px}
+.card-orange{background:linear-gradient(135deg,#FF8A2A,#FF6B00);color:white}
+.card-white{background:white;color:#1A1A2E;border:2px solid #FF8A2A}
+.card-icon{width:52px;height:52px;background:white;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px}
+.card-white .card-icon{background:#FFF0E5}
+.card h2{font-size:18px;font-weight:700;margin-bottom:4px}
+.card p{font-size:12px;opacity:0.9;font-weight:500}
+.arrow{position:absolute;bottom:14px;right:14px;width:36px;height:36px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.card-white .arrow{background:#FF6B00;color:white}
+.filters-head{margin:20px 16px 10px;display:flex;justify-content:space-between;align-items:center}
+.filters-head h3{font-size:18px;font-weight:700}
+.filter-row{margin:0 16px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.filter{background:white;border:2px solid #FFC89A;border-radius:16px;padding:10px 6px;text-align:center;cursor:pointer;font-size:11px;font-weight:600}
+.filter.active{background:#FF6B00;color:white;border-color:#FF6B00}
+.map-btn{margin:18px 16px;background:linear-gradient(135deg,#FF8A2A,#FF6B00);color:white;border:none;width:calc(100% - 32px);padding:14px;border-radius:16px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.trust{margin:16px;text-align:center;font-size:11px;color:#888;font-weight:500}
+.page{display:none;padding:16px}
+.page.active{display:block}
+.back{display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:14px;cursor:pointer;color:#333}
+.room-card{background:white;border-radius:18px;padding:14px;margin-bottom:14px;box-shadow:0 3px 14px rgba(0,0,0,0.06);display:flex;gap:12px;border:1px solid #FFE5D0}
+.room-img{width:92px;height:92px;background:#FFF0E5;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0}
+.room-info{flex:1}
+.room-info h4{font-size:15px;font-weight:700;margin-bottom:2px;color:#1A1A2E}
+.room-info p{font-size:11.5px;color:#666;margin-bottom:4px;line-height:1.3}
+.price{font-weight:800;color:#FF6B00;font-size:14px;margin-top:4px}
+.tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.tag{font-size:10px;background:#FFF0E5;color:#FF6B00;padding:3px 8px;border-radius:20px;font-weight:600}
+.call-row{display:flex;gap:8px;margin-top:10px}
+.call-btn{flex:1;border:none;padding:9px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-call{background:#1A1A2E;color:white}
+.btn-wa{background:#25D366;color:white}
+</style>
+</head>
+<body>
+<div id="home">
+<div class="header"><div class="logo"><div class="logo-icon">🏠</div><div><h1>Majha Ghar</h1><p>Rooms & Mess Finder • Kopargaon</p></div></div><div class="avatar">P</div></div>
+<div class="search-box"><span>🔍</span><input id="searchInput" placeholder="Search Nandini, Sundar..." oninput="searchRooms()"><span>🎤</span></div>
+<div class="cards">
+<div class="card card-orange" onclick="showPage('rooms')"><div class="card-icon">🏠</div><h2>Find Rooms</h2><p>5 Girls Hostels 🛡️</p><div class="arrow">→</div></div>
+<div class="card card-white" onclick="showPage('mess')"><div class="card-icon">🍽️</div><h2>Find Mess</h2><p>10+ Verified 🛡️</p><div class="arrow">→</div></div>
+</div>
+<div class="filters-head"><h3>Filters</h3><span style="color:#FF6B00;font-size:13px;font-weight:600;cursor:pointer" onclick="clearF()">Clear all ↺</span></div>
+<div class="filter-row">
+<div class="filter active"><span>👩</span><br>Girls Only</div>
+<div class="filter" onclick="toggleF(this,'sanjivani')"><span>📍</span><br>Near Sanjivani</div>
+<div class="filter" onclick="toggleF(this,'3000')"><span>₹</span><br>Under Rs.3000</div>
+<div class="filter" onclick="toggleF(this,'veg')"><span>🌿</span><br>Veg Only</div>
+</div>
+<button class="map-btn" onclick="showPage('map')">📍 Map View</button>
+<div class="trust">🛡️ Trusted by 200+ Students • Made for Sanjivani University</div>
+</div>
+<div id="rooms" class="page">
+<div class="back" onclick="showPage('home')">← Back to Home</div>
+<h3 style="margin-bottom:6px">🏠 5 Girls Hostels - Kopargaon</h3>
+<p style="font-size:12px;color:#888;margin-bottom:14px">All verified • Girls Only • Near Sanjivani</p>
+<div id="roomList"></div>
+</div>
+<div id="mess" class="page">
+<div class="back" onclick="showPage('home')">← Back to Home</div>
+<h3>🍽️ Mess Services</h3>
+<p style="font-size:12px;color:#888;margin:8px 0 14px">Contact hostel for mess info</p>
+</div>
+<div id="map" class="page">
+<div class="back" onclick="showPage('home')">← Back to Home</div>
+<h3>📍 Map - Sanjivani Area</h3>
+<div style="background:white;border-radius:16px;margin-top:14px;padding:20px;text-align:center">
+<p style="font-size:60px">🗺️</p>
+<a href="https://maps.google.com/?q=Sanjivani+University+Kopargaon" target="_blank" style="display:inline-block;margin-top:16px;background:#FF6B00;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:600;font-size:13px">Open in Google Maps</a>
+</div>
+</div>
+<script>
+const hostels = [
+{name:"Sundar Hostel",full:"Sundar Girls Hostel",area:"Near Sanjivani Gate No.2, Kopargaon - 0.3km from College",price:"₹2800/month",type:"girls sanjivani 3000 veg",details:"Girls Only • Single & Double Sharing • WiFi + Water 24h • CCTV Security • Study Table",tags:["Girls Only","Near Sanjivani","Verified"],phone:"919876543210",icon:"🏨"},
+{name:"Nandini Hostel",full:"Nandini Girls Hostel",area:"Nandini Area, College Road, Kopargaon - 0.5km from Sanjivani",price:"₹3000/month",type:"girls sanjivani veg",details:"Premium Girls Hostel • Attached Kitchen • Veg Mess Available • 2 Sharing • Cupboard",tags:["Girls Only","Veg","Popular"],phone:"919876543211",icon:"🏡"},
+{name:"Atma Malik",full:"Atma Malik Girls Hostel",area:"Atma Malik Mandir Road, Kopargaon - Near Sanjivani University",price:"₹2500/month",type:"girls sanjivani 3000 veg",details:"Girls Only • 1RK & 2RK • Parking Available • Budget Friendly • Water 24h",tags:["Girls Only","Budget","Near Sanjivani"],phone:"919876543212",icon:"🏘️"},
+{name:"Rajeshwari",full:"Rajeshwari Girls Hostel",area:"Sanjivani Campus Road, Kopargaon - 0.4km from Gate 1",price:"₹2900/month",type:"girls sanjivani veg 3000",details:"Girls Only • Veg Only • Study Table + Cupboard • Mess Included • WiFi",tags:["Girls Only","Veg Only","Verified"],phone:"919876543213",icon:"🌸"},
+{name:"Ambika Hostel",full:"Ambika Girls Hostel",area:"Shirdi Road, Kopargaon - Near Bus Stand - 1km from College",price:"₹2600/month",type:"girls veg sanjivani 3000",details:"Girls Only • 2 & 3 Sharing • Home Made Food • CCTV • Laundry",tags:["Girls Only","Veg","Trusted"],phone:"919876543214",icon:"🏠"}
+];
+function showPage(id){
+document.getElementById('home').style.display=id==='home'?'block':'none';
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+if(id!=='home')document.getElementById(id).classList.add('active');
+if(id==='rooms')render(hostels);
+window.scrollTo(0,0);
+}
+function render(list){
+const div=document.getElementById('roomList');
+if(list.length===0){div.innerHTML='<p style="text-align:center;padding:30px;color:#999">No hostel found 😕</p>';return}
+div.innerHTML=list.map(h=>`
+<div class="room-card">
+<div class="room-img">${h.icon}</div>
+<div class="room-info">
+<h4>${h.full}</h4>
+<p>📍 ${h.area}</p>
+<p>${h.details}</p>
+<div class="tags">${h.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+<div class="price">${h.price}</div>
+<div class="call-row">
+<button class="call-btn btn-call" onclick="window.open('tel:+${h.phone}')">📞 Call</button>
+<button class="call-btn btn-wa" onclick="window.open('https://wa.me/${h.phone}?text=Hi, I saw ${h.full} on Majha Ghar website. Room available for girls?')">WhatsApp</button>
+</div>
+</div>
+</div>`).join('');
+}
+function toggleF(el,val){
+el.classList.toggle('active');
+let filtered=hostels;
+document.querySelectorAll('.filter.active').forEach(activeEl=>{
+const txt=activeEl.textContent.toLowerCase();
+if(txt.includes('sanjivani'))filtered=filtered.filter(h=>h.type.includes('sanjivani'));
+if(txt.includes('3000'))filtered=filtered.filter(h=>h.type.includes('3000'));
+if(txt.includes('veg'))filtered=filtered.filter(h=>h.type.includes('veg'));
+});
+render(filtered);
+if(filtered.length>0)showPage('rooms');
+}
+function clearF(){
+document.querySelectorAll('.filter').forEach((f,i)=>{if(i!=0)f.classList.remove('active')});
+render(hostels);
+document.getElementById('searchInput').value='';
+}
+function searchRooms(){
+const q=document.getElementById('searchInput').value.toLowerCase();
+if(!q){render(hostels);return}
+const filtered=hostels.filter(h=>h.name.toLowerCase().includes(q)||h.full.toLowerCase().includes(q)||h.area.toLowerCase().includes(q));
+render(filtered);
+showPage('rooms');
+}
+render(hostels);
+</script>
+</body>
+</html>
